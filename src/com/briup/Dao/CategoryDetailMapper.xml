@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+			"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.briup.Dao.CategoryDetailMapper">
+
+	<resultMap type="categoryDetail" id="categoryDetailResult">
+		<id property="id" column="did" />
+		<result property="name" column="dname" />
+	</resultMap>
+
+
+	<select id="selectAllcategoryDetail" resultMap="categoryDetailResult">
+		select id did,name dname ,CATEGORY_ID
+		from d_category_detail
+	</select>
+
+<select id="selectcategorybyID" parameterType="long" resultMap="categoryDetailResult">
+		select id did,name dname ,CATEGORY_ID
+		from d_category_detail 
+		where id = #{id}
+	</select>
+
+
+</mapper>

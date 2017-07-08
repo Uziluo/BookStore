@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+			"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.briup.Dao.ReceiverMapper">
+
+	
+	<insert id="insertOne" parameterType="Receiver">
+		<selectKey keyProperty="id" resultType="int" order="BEFORE"> 
+					SELECT nvl(max(id)+1,0) FROM D_RECEIVER
+		</selectKey> 
+		insert into d_receiver(ID,NAME,ADDRESS,PHONE,USER_ID) 
+		values( #{id},#{name},#{address},#{phone},#{user.id})
+	</insert>
+	
+	<select id="selectMaxID" resultType="int">
+		SELECT nvl(max(id),-1) FROM D_RECEIVER
+	</select>
+ 
+<!-- <insert id="insertUser" parameterType="user" >
+	insert into d_user(Id,name,password,zip,address,phone,email)
+	values(#{id},#{name},#{password},#{zip},#{address},#{phone},#{email})
+</insert>
+
+<update id="updateByAllInfo" parameterType="user">
+update d_user  
+set NAME=#{name},password=#{password},zip=#{zip},address=#{address},phone=#{phone},email=#{email}
+where id =#{id}
+</update>
+
+
+<select id="selectMaxId" resultType="long">
+	select max(id) from d_user
+</select>
+
+<select id="selectUserByName" resultType="user" parameterType="String">
+	select * from d_user where name=#{name}
+</select> -->
+
+
+
+</mapper>

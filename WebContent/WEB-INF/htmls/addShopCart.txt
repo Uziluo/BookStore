@@ -1,0 +1,14 @@
+	Long id = Long.parseLong(req.getParameter("bookid"));
+		int count = Integer.parseInt(req.getParameter("count"));
+		ServletContext sc = req.getServletContext();
+		Map<Long, Book> map = (Map<Long, Book>)sc.getAttribute("allBook");
+		OrderLine line = new OrderLine();
+		line.setBook(map.get(id));
+		line.setNum(count);
+		HttpSession session = req.getSession();
+		ShoppingCart cart =(ShoppingCart) session.getAttribute("cart");
+		if(cart==null){
+			cart = new ShoppingCart();
+			session.setAttribute("cart", cart);
+		}
+		cart.addLine(line);

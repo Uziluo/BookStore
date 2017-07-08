@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+			"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.briup.Dao.CategoryMapper">
+
+	<resultMap type="category" id="categoryResult">
+		<id property="id" column="cid" />
+		<result property="name" column="cname" />
+		<collection property="cate_detail"  resultMap="categorydetailResult"></collection>
+	</resultMap>
+
+	<resultMap type="categorydetail" id="categorydetailResult">
+		<id property="id" column="did" />
+		<result property="name" column="dname" />
+		<result property="CATEGORY_ID" column="cid" />
+		<collection property="products" resultMap="productResult"></collection> 
+	</resultMap>
+
+	<resultMap type="product" id="productResult">
+		<id property="id" column="pid" />
+		<result property="name" column="pname" />
+		<result property="CAT_DETAIL_ID" column="did" />
+		<result property="price" column="price" />
+		<result property="service_fg" column="service_fg" />
+		<result property="service_myf" column="service_myf" />
+		<result property="service_zt" column="service_zt" />
+		<result property="service_th" column="service_th" />
+		<result property="version" column="version" />
+		<result property="stock" column="stock" />
+	</resultMap>
+
+	<select id="selectAll" resultMap="categoryResult">
+		select c.id cid ,c.name cname ,
+		d.id did ,d.name dname
+		from d_category c left  outer join  d_category_detail d on c.id = d.CATEGORY_ID
+		order by c.id
+	</select>
+	
+	<select id="selectAll2" resultMap="categoryResult">
+		select c.id cid ,c.name cname ,
+		d.id did ,d.name dname,
+		p.id pid ,p.name pname ,p.PRICE ,p.SERVICE_FG ,p.SERVICE_MYF ,p.SERVICE_ZT
+		,p.SERVICE_TH ,p.VERSION ,p.STOCK
+		,p.DESCRIPTION,p.WRITER,p.PUBLISH_ID,p.PAGES,p.ISBN
+		,p.PUBLISH_DATE,p.FEATURE_IMAGES ,p.IMAGES,p.BILL,p.CAT_DETAIL_ID
+		,p.START_DATE,p.SALE_NUM,p.FLAG ,p.EXPLAIN
+		from d_category c left  outer join  d_category_detail d on c.id = d.CATEGORY_ID
+		left outer join d_product p on d.id = p.CAT_DETAIL_ID
+		order by c.id
+	</select>
+	
+	
+
+	<select id="selectbyID" parameterType="int" resultMap="categoryResult">
+		select
+		c.id,c.name,d.id as cid,d.name cname,d.CATEGORY_ID
+		from d_category c
+		,d_category_detail d
+		where c.id= d.CATEGORY_ID
+		and c.id = #{id}
+	</select>
+
+	<select id="selectAllCategory" resultMap="categoryResult">
+	 select id cid ,name cname
+	from d_category
+	</select>
+
+
+
+
+</mapper>

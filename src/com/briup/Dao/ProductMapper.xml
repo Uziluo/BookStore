@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+			"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.briup.Dao.ProductMapper">
+
+<resultMap type="product" id="productResult">
+	<id property="id" column="pid" />
+		<result property="name" column="pname" />
+		<result property="CAT_DETAIL_ID" column="did" />
+		<result property="price" column="price" />
+		<result property="service_fg" column="service_fg" />
+		<result property="service_myf" column="service_myf" />
+		<result property="service_zt" column="service_zt" />
+		<result property="service_th" column="service_th" />
+		<result property="version" column="version" />
+		<result property="stock" column="stock" />
+		<result property="description" column="description" />
+		<result property="writer" column="writer" />
+		<result property="pages" column="pages" />
+		<result property="publishid" column="PUBLISH_ID"/>
+		<result property="ISBN" column="ISBN" />
+		<result property="publish_date" column="publish_date" />
+		<result property="feature_images" column="feature_images" />
+		<result property="images" column="images" />
+		<result property="start_date" column="start_date" />
+		<result property="sale_num" column="sale_num" />
+		<result property="flag" column="flag" />
+		<result property="explain" column="explain" />
+		<result property="bill" column="bill" />
+</resultMap>
+
+<!-- 查询所有书籍 -->
+<select id="selectAllProduct" resultMap="productResult">
+select
+ID pid ,NAME pname ,PRICE ,SERVICE_FG  ,SERVICE_MYF ,SERVICE_ZT  ,SERVICE_TH  ,VERSION  ,STOCK ,DESCRIPTION,WRITER,PUBLISH_ID
+	 ,PAGES,ISBN ,PUBLISH_DATE,FEATURE_IMAGES ,IMAGES,BILL,CAT_DETAIL_ID ,START_DATE,SALE_NUM,FLAG ,EXPLAIN
+from d_product
+</select>
+	
+	<!-- 根据ID查找书籍 -->
+  <select id="selectProductById"  parameterType="int" resultMap="productResult">
+ select  * from d_product
+ where id =#{id}
+ </select> 
+ 
+ <!-- 书名的模糊查询 -->
+ <select id="selectProductBylikeName" parameterType="String" resultMap="productResult"> 
+ select  * from d_product
+ where lower(name) like concat(concat('%',#{name}),'%') or upper(name) like concat(concat('%',#{name}),'%')
+ </select>
+ 
+ <!-- 根据一级分类来查询所有产品 -->
+ <select id="selectProByCID" parameterType="int" resultMap="productResult">
+ select * from d_product  p,D_CATEGORY_DETAIL d 
+ where d.id = p.CAT_DETAIL_ID and d.CATEGORY_ID= #{cid}
+ </select>
+
+<!-- 根据二级的分类查询所有数据 -->
+<select id="selectProByDID" parameterType="int" resultMap="productResult">
+select * from d_product
+where CAT_DETAIL_ID = #{did}
+</select>
+
+ <select id="selectCAT_DETAILbyID" parameterType="int" resultType="map">
+select   d.id,d.name
+from d_product p ,
+D_CATEGORY_DETAIL d 
+where d.id = p.CAT_DETAIL_ID and p.id = #{id}
+</select> 
+
+
+</mapper>
